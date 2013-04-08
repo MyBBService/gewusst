@@ -97,6 +97,6 @@ function gewusst()
 	$gewusst = "";
 	$query=$db->simple_select("gewusst", "*", "enabled='1'", array("order_by"=>"RAND()", "limit"=>1));
 	$frage=$db->fetch_array($query);
-	$gewusst = $frage['message'];
+	$gewusst = "<div style=\"text-align: center; color: #000; margin-bottom: 15px;\">{$frage['message']}</div>";
 }
 ?>

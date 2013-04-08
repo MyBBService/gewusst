@@ -5,7 +5,7 @@ $l['gewusst_permission'] = "Kann \"Schon gewusst?\" verwalten?";
 $l['gewusst_no'] = "Kein Wissen vorhanden";
 
 $l['gewusst_list'] = "Liste";
-$l['announcement_list_desc'] = "Hier k&ouml;nnen Sie ihr Wissen verwalten";
+$l['gewusst_list_desc'] = "Hier k&ouml;nnen Sie ihr Wissen verwalten";
 $l['gewusst_add'] = "Wissen hinzuf&uuml;gen";
 $l['gewusst_add_desc'] = "Hier k&ouml;nnen Sie eine Frage hinzuf&uuml;gen";
 $l['gewusst_add_success'] = "Frage erfolgreich hinzugef&uuml;gt";

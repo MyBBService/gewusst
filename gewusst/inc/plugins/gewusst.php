@@ -33,6 +33,20 @@ function gewusst_install()
 		`message` text NOT NULL,
 		`enabled` tinyint(1) NOT NULL, 
 		PRIMARY KEY (`id`) ) ENGINE=MyISAM {$col}");
+
+	$templatearray = array(
+        "title" => "gewusst",
+        "template" => "<table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\" style=\"margin-bottom: 15px;\">
+	<tr>
+		<td class=\"thead\" colspan=\"2\"><strong>{\$lang->gewusst}</strong></td>
+	</tr>
+	<tr>
+		<td class=\"trow1\" style=\"text-align: center;\">{\$frage[\'message\']}</td>
+	</tr>
+</table>",
+        "sid" => -2
+	);
+	$db->insert_query("templates", $templatearray);
 }
 
 function gewusst_is_installed()
@@ -45,6 +59,7 @@ function gewusst_uninstall()
 {
 	global $db;
 	$db->drop_table("gewusst");
+	$db->delete_query("templates", "title = 'gewusst'");
 }
 
 function gewusst_activate()
@@ -93,10 +108,13 @@ function gewusst_admin_config_permissions($admin_permissions)
 
 function gewusst()
 {
-	global $gewusst, $mybb, $db, $lang;
+	global $gewusst, $db, $lang, $templates;
 	$gewusst = "";
-	$query=$db->simple_select("gewusst", "*", "enabled='1'", array("order_by"=>"RAND()", "limit"=>1));
-	$frage=$db->fetch_array($query);
-	$gewusst = "<div style=\"text-align: center; color: #000; margin-bottom: 15px;\">{$frage['message']}</div>";
+	$query = $db->simple_select("gewusst", "*", "enabled='1'", array("order_by"=>"RAND()", "limit"=>1));
+	if($db->num_rows($query) != 0) {
+		$lang->load("gewusst");
+		$frage = $db->fetch_array($query);
+		eval("\$gewusst .= \"".$templates->get("gewusst")."\";");
+	}
 }
 ?>

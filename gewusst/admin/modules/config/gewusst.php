@@ -159,11 +159,10 @@ if($mybb->input['action'] == "do_add") {
 	$page->output_header($lang->gewusst);
 	generate_tabs("list");
 
-	$form = new Form("index.php?module=".MODULE."&amp;action=order", "post");
-	$form_container = new FormContainer($lang->gewusst);
+	$table = new Table;
 
-	$form_container->output_row_header($lang->gewusst, array("colspan" => 2));
-	$form_container->output_row_header($lang->controls, array("colspan" => 2, 'class' => 'align_center'));
+	$table->construct_header($lang->gewusst, array("colspan" => 2));
+	$table->construct_header($lang->controls, array("colspan" => 2, 'class' => 'align_center'));
 
 	$query = $db->simple_select("gewusst", "*", "", array("order_by"=>"enabled"));
 	if($db->num_rows($query) > 0)
@@ -175,18 +174,17 @@ if($mybb->input['action'] == "do_add") {
 			} else {
 				$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_off.gif\" alt=\"(Inactive)\" title=\"\" /> ";
 			}
-			$form_container->output_cell("<a href=\"index.php?module=".MODULE."&amp;action=enable&amp;id={$frage['id']}\">$icon</a>", array('width' => '2%'));
-			$form_container->output_cell($frage['message']);
-			$form_container->output_cell("<a href=\"index.php?module=".MODULE."&amp;action=edit&amp;id={$frage['id']}\">{$lang->edit}</a>", array('class' => 'align_center', 'width' => '10%'));
-			$form_container->output_cell("<a href=\"index.php?module=".MODULE."&amp;action=delete&amp;id={$frage['id']}\">{$lang->delete}</a>", array('class' => 'align_center', 'width' => '10%'));
-			$form_container->construct_row();
+			$table->construct_cell("<a href=\"index.php?module=".MODULE."&amp;action=enable&amp;id={$frage['id']}\">$icon</a>", array('width' => '2%'));
+			$table->construct_cell($frage['message']);
+			$table->construct_cell("<a href=\"index.php?module=".MODULE."&amp;action=edit&amp;id={$frage['id']}\">{$lang->edit}</a>", array('class' => 'align_center', 'width' => '10%'));
+			$table->construct_cell("<a href=\"index.php?module=".MODULE."&amp;action=delete&amp;id={$frage['id']}\">{$lang->delete}</a>", array('class' => 'align_center', 'width' => '10%'));
+			$table->construct_row();
 		}
 	} else {
-		$form_container->output_cell($lang->gewusst_no, array('class' => 'align_center', 'colspan' => 6));
-		$form_container->construct_row();
+		$table->construct_cell($lang->gewusst_no, array('class' => 'align_center', 'colspan' => 6));
+		$table->construct_row();
 	}
-	$form_container->end();
-	$form->end();
+	$table->output($lang->gewusst);
 }
 
 $page->output_footer();

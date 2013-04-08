@@ -14,7 +14,7 @@ function gewusst_info()
 {
 	return array(
 		"name"			=> "Schon gewusst?",
-		"description"	=> "Erstellt eine einfache Anzeige mit n?tzlichen Infos",
+		"description"	=> "Erstellt eine einfache Anzeige mit nützlichen Infos",
 		"website"		=> "http://mybbservice.de/",
 		"author"		=> "MyBBService",
 		"authorsite"	=> "http://mybbservice.de/",

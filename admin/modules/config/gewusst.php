@@ -5,7 +5,10 @@ if(!defined("IN_MYBB"))
 	exit;
 }
 
-define(MODULE, "config-gewusst");
+if(function_exists("mybbservice_info"))
+    define(MODULE, "mybbservice-gewusst");
+else
+	define(MODULE, "config-gewusst");
 
 $page->add_breadcrumb_item($lang->gewusst, "index.php?module=".MODULE);
 

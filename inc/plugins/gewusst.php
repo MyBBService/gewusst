@@ -4,11 +4,19 @@ if(!defined("IN_MYBB"))
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
+global $cache;
+if(!isset($pluginlist))
+    $pluginlist = $cache->read("plugins");
 
 $plugins->add_hook("index_start", "gewusst");
-$plugins->add_hook("admin_config_menu", "gewusst_admin_config_menu");
-$plugins->add_hook("admin_config_action_handler", "gewusst_admin_config_action_handler");
-$plugins->add_hook("admin_config_permissions", "gewusst_admin_config_permissions");
+if(is_array($pluginlist['active']) && in_array("mybbservice", $pluginlist['active'])) {
+	$plugins->add_hook("mybbservice_actions", "gewusst_mybbservice_actions");
+	$plugins->add_hook("mybbservice_permission", "gewusst_admin_config_permissions");
+} else {
+	$plugins->add_hook("admin_config_menu", "gewusst_admin_config_menu");
+	$plugins->add_hook("admin_config_action_handler", "gewusst_admin_config_action_handler");
+	$plugins->add_hook("admin_config_permissions", "gewusst_admin_config_permissions");
+}
 
 function gewusst_info()
 {
@@ -18,9 +26,10 @@ function gewusst_info()
 		"website"		=> "http://mybbservice.de/",
 		"author"		=> "MyBBService",
 		"authorsite"	=> "http://mybbservice.de/",
-		"version"		=> "0.1",
+		"version"		=> "1.0.1",
 		"guid" 			=> "",
-		"compatibility" => "16*"
+		"compatibility" => "16*",
+		"dlcid"			=> "17"
 	);
 }
 
@@ -72,6 +81,26 @@ function gewusst_deactivate()
 {
 	require MYBB_ROOT."inc/adminfunctions_templates.php";
 	find_replace_templatesets("index", "#".preg_quote('{$gewusst}')."#i", "", 0);
+}
+
+function gewusst_mybbservice_actions($actions)
+{
+	global $page, $lang, $info;
+	$lang->load("gewusst");
+
+	$actions['gewusst'] = array(
+		"active" => "gewusst",
+		"file" => "../config/gewusst.php"
+	);
+
+	$sub_menu = array();
+	$sub_menu['10'] = array("id" => "gewusst", "title" => $lang->gewusst, "link" => "index.php?module=mybbservice-gewusst");
+	$sidebar = new SidebarItem($lang->gewusst);
+	$sidebar->add_menu_items($sub_menu, $actions[$info]['active']);
+
+	$page->sidebar .= $sidebar->get_markup();
+
+	return $actions;
 }
 
 function gewusst_admin_config_menu($sub_menu)

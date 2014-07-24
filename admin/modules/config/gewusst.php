@@ -6,7 +6,7 @@ if(!defined("IN_MYBB"))
 }
 
 if(function_exists("mybbservice_info"))
-    define(MODULE, "mybbservice-gewusst");
+	define(MODULE, "mybbservice-gewusst");
 else
 	define(MODULE, "config-gewusst");
 
@@ -19,7 +19,7 @@ if($mybb->input['action'] == "do_add") {
 		admin_redirect("index.php?module=".MODULE."&action=add");
 	}
 
-    if(!strlen(trim($mybb->input['gewusst'])))
+	if(!strlen(trim($mybb->input['gewusst'])))
 	{
 		flash_message($lang->gewusst_not, 'error');
 		admin_redirect("index.php?module=".MODULE."&action=add");
@@ -29,10 +29,10 @@ if($mybb->input['action'] == "do_add") {
 		flash_message($lang->gewusst_enable_not, 'error');
 		admin_redirect("index.php?module=".MODULE."&action=add");
 	}
-	
+
 	$insert = array(
 		"message" => $db->escape_string($mybb->input['gewusst']),
-		"enabled" => $mybb->input['enable']
+		"enabled" => (int)$mybb->input['enable']
 	);
 	$db->insert_query("gewusst", $insert);
 
@@ -42,7 +42,7 @@ if($mybb->input['action'] == "do_add") {
 	$page->add_breadcrumb_item($lang->gewusst_add, "index.php?module=".MODULE."&action=add");
 	$page->output_header($lang->gewusst_add);
 	generate_tabs("add");
-	
+
 	$form = new Form("index.php?module=".MODULE."&amp;action=do_add", "post");
 	$form_container = new FormContainer($lang->gewusst_add);
 
@@ -83,11 +83,11 @@ if($mybb->input['action'] == "do_add") {
 	}
 	$frage = $db->fetch_array($query);
 	if($frage['enabled']) {
-	    $enabled=false;
-	    $lang->gewusst_enable_success=$lang->sprintf($lang->gewusst_enable_success, $lang->gewusst_deactivate);
+		$enabled = 0;
+		$lang->gewusst_enable_success=$lang->sprintf($lang->gewusst_enable_success, $lang->gewusst_deactivate);
 	} else {
-		$enabled=true;
-	    $lang->gewusst_enable_success=$lang->sprintf($lang->gewusst_enable_success, $lang->gewusst_activate);
+		$enabled = 1;
+		$lang->gewusst_enable_success=$lang->sprintf($lang->gewusst_enable_success, $lang->gewusst_activate);
 	}
 	$db->update_query("gewusst", array("enabled"=>$enabled), "id='{$id}'");
 	flash_message($lang->gewusst_enable_success, 'success');
@@ -105,7 +105,7 @@ if($mybb->input['action'] == "do_add") {
 		admin_redirect("index.php?module=".MODULE."&action=edit&id=$id");
 	}
 
-    if(!strlen(trim($mybb->input['gewusst'])))
+	if(!strlen(trim($mybb->input['gewusst'])))
 	{
 		flash_message($lang->gewusst_not, 'error');
 		admin_redirect("index.php?module=".MODULE);
@@ -118,7 +118,7 @@ if($mybb->input['action'] == "do_add") {
 
 	$update = array(
 		"message" => $db->escape_string($mybb->input['gewusst']),
-		"enabled" => $mybb->input['enable']
+		"enabled" => (int)$mybb->input['enable']
 	);
 	$db->update_query("gewusst", $update, "id='{$id}'");
 	flash_message($lang->gewusst_edit_success, 'success');
@@ -173,9 +173,9 @@ if($mybb->input['action'] == "do_add") {
 		while($frage = $db->fetch_array($query))
 		{
 			if($frage['enabled']) {
-				$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_on.gif\" alt=\"(Active)\" title=\"\" /> ";
+				$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_on.png\" alt=\"(Active)\" title=\"\" /> ";
 			} else {
-				$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_off.gif\" alt=\"(Inactive)\" title=\"\" /> ";
+				$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_off.png\" alt=\"(Inactive)\" title=\"\" /> ";
 			}
 			$table->construct_cell("<a href=\"index.php?module=".MODULE."&amp;action=enable&amp;id={$frage['id']}\">$icon</a>", array('width' => '2%'));
 			$table->construct_cell($frage['message']);

@@ -6,7 +6,7 @@ if(!defined("IN_MYBB"))
 
 global $cache;
 if(!isset($pluginlist))
-    $pluginlist = $cache->read("plugins");
+	$pluginlist = $cache->read("plugins");
 
 $plugins->add_hook("index_start", "gewusst");
 if(is_array($pluginlist['active']) && in_array("mybbservice", $pluginlist['active'])) {
@@ -26,9 +26,9 @@ function gewusst_info()
 		"website"		=> "http://mybbservice.de/",
 		"author"		=> "MyBBService",
 		"authorsite"	=> "http://mybbservice.de/",
-		"version"		=> "1.0.1",
+		"version"		=> "1.0.2",
 		"guid" 			=> "",
-		"compatibility" => "16*",
+		"compatibility" => "17*,18*",
 		"dlcid"			=> "17"
 	);
 }
@@ -44,8 +44,8 @@ function gewusst_install()
 		PRIMARY KEY (`id`) ) ENGINE=MyISAM {$col}");
 
 	$templatearray = array(
-        "title" => "gewusst",
-        "template" => "<table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\" style=\"margin-bottom: 15px;\">
+		"title" => "gewusst",
+		"template" => "<table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\" style=\"margin-bottom: 15px;\">
 	<tr>
 		<td class=\"thead\" colspan=\"2\"><strong>{\$lang->gewusst}</strong></td>
 	</tr>
@@ -53,7 +53,7 @@ function gewusst_install()
 		<td class=\"trow1\" style=\"text-align: center;\">{\$frage[\'message\']}</td>
 	</tr>
 </table>",
-        "sid" => -2
+		"sid" => -2
 	);
 	$db->insert_query("templates", $templatearray);
 }
